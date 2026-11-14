@@ -66,11 +66,11 @@ function Footer() {
             </h3>
 
             <p className="text-gray-400">
-              Email: support@crochetstore.com
+              Email: crochetstore@gmail.com
             </p>
 
             <p className="text-gray-400 mt-2">
-              Phone: +91 98765 43210
+              Phone: +91 920700 9383
             </p>
           </div>
 

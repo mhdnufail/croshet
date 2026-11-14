@@ -52,7 +52,7 @@ function Hero() {
             <div className="w-full max-w-md h-[400px] bg-accent rounded-3xl flex items-center justify-center">
 
               <span className="text-6xl">
-                🧶
+                img
               </span>
 
             </div>
