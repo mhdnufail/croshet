@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Container from "../Container";
 import Button from "../Button";
 
+
 function Hero() {
   return (
     <section className="bg-secondary">
@@ -49,10 +50,10 @@ function Hero() {
           {/* Image Placeholder */}
           <div className="flex justify-center">
 
-            <div className="w-full max-w-md h-[400px] bg-accent rounded-3xl flex items-center justify-center">
+            <div className="w-full max-w-md h-[300px] bg-accent rounded-10xl flex items-center justify-center">
 
               <span className="text-6xl">
-                img
+                <img src="https://i.pinimg.com/1200x/06/4e/dc/064edc3ed659faae20d9616b7a529d69.jpg" alt="" />
               </span>
 
             </div>

@@ -9,7 +9,7 @@ const products = [
     category: "Bags",
     price: 899,
     rating: 4.8,
-    image: "👜",
+    image: "https://i.pinimg.com/736x/4b/8f/91/4b8f91dd54a5a528da1b7c3fab30f9dd.jpg",
   },
   {
     id: 2,
@@ -75,6 +75,7 @@ function FeaturedProducts() {
             <ProductCard
               key={product.id}
               product={product}
+              
             />
           ))}
 

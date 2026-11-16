@@ -8,8 +8,9 @@ function ProductCard({ product }) {
       {/* Product Image */}
       <Link to={`/products/${product.id}`}>
         <div className="h-64 bg-secondary flex items-center justify-center">
-          <span className="text-7xl group-hover:scale-110 transition duration-300">
-            {product.image}
+          <span className="text-7xl group-hover:scale-110 transition duration-200">
+            <img 
+              src={product.image}/>
           </span>
         </div>
       </Link>
