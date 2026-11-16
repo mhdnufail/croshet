@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Container from "../components/Container";
 import ProductCard from "../components/productcard"
 
@@ -68,7 +69,29 @@ const products = [
   },
 ];
 
+const categories = [
+  "All",
+  "Bags",
+  "Flowers",
+  "Toys",
+  "Accessories"
+]
+
 function Products() {
+  const [search,setSearch] = useState("")
+  const [category,setCategory] = useState("All")
+
+  const filteredProducts = products.filter((product) => {
+  const matchesSearch = product.name
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  const matchesCategory =
+    category === "All" || product.category === category;
+
+  return matchesSearch && matchesCategory;
+  });
+
   return (
     <section className="py-16">
       <Container>
@@ -88,15 +111,57 @@ function Products() {
           </p>
         </div>
 
+        {/* Search */}
+        <div className="max-w-xl mx-auto mt-8">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+                {/* Categories */}
+        <div className="flex flex-wrap justify-center gap-3 mt-6">
+          {categories.map((item) => (
+            <button
+              key={item}
+              onClick={() => setCategory(item)}
+              className={`px-5 py-2 rounded-full border transition ${
+                category === item
+                  ? "bg-primary text-white border-primary"
+                  : "border-gray-300 hover:border-primary hover:text-primary"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
 
-          {products.map((product) => (
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
             />
-          ))}
+          ))
+        ) : (
+          <div className="col-span-full text-center py-12">
+            <p className="text-4xl">🔍</p>
+
+            <h3 className="text-xl font-semibold mt-4">
+              No products found
+            </h3>
+
+            <p className="text-muted mt-2">
+              Try searching for another product.
+            </p>
+          </div>
+        )}
 
         </div>
 
