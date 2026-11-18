@@ -1,124 +1,78 @@
-import { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
-    <nav className="border-b bg-white">
-      <div className="max-w-7xl mx-auto px-4 py-4">
-
-        {/* Top Navbar */}
+    <header className="absolute top-0 left-0 z-50 w-full">
+      <nav className="px-6 md:px-10 py-6">
         <div className="flex items-center justify-between">
 
           {/* Logo */}
           <Link
             to="/"
-            className="text-2xl font-bold"
-            onClick={() => setIsMenuOpen(false)}
+            className="
+              font-['Playfair_Display']
+              text-[1.45rem]
+              font-semibold
+              tracking-[0.15em]
+              uppercase
+              text-[#F8F3EA]
+              transition-opacity
+              duration-200
+              hover:opacity-75
+            "
           >
-             Crochet Store
+            CROCHET
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-10">
 
-            <Link to="/" className="hover:text-primary">
+            <Link
+              to="/"
+              className="text-xs tracking-[0.25em] uppercase text-white
+              hover:opacity-60 transition"
+            >
               Home
             </Link>
 
-            <Link to="/products" className="hover:text-primary">
-              Products
-            </Link>
-
-            <Link to="/categories" className="hover:text-primary">
-              Categories
-            </Link>
-
-            <Link to="/wishlist" className="hover:text-primary">
-              ♡ Wishlist
-            </Link>
-
-            <Link to="/cart" className="hover:text-primary">
-              🛒 Cart
+            <Link
+              to="/products"
+              className="text-xs tracking-[0.25em] uppercase text-white
+              hover:opacity-60 transition"
+            >
+              Shop
             </Link>
 
             <Link
-              to="/login"
-              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
+              to="/about"
+              className="text-xs tracking-[0.25em] uppercase text-white
+              hover:opacity-60 transition"
             >
-              Login
+              About
+            </Link>
+
+            <Link
+              to="/contact"
+              className="text-xs tracking-[0.25em] uppercase text-white
+              hover:opacity-60 transition"
+            >
+              Contact
             </Link>
 
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-2xl"
-            aria-label="Toggle menu"
+          {/* Cart */}
+          <Link
+            to="/cart"
+            className="text-white text-xl hover:opacity-60 transition"
           >
-            {isMenuOpen ? "✕" : "☰"}
-          </button>
+            🛍
+          </Link>
 
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden mt-4 pt-4 border-t">
-
-            <div className="flex flex-col gap-4">
-
-              <Link
-                to="/"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Home
-              </Link>
-
-              <Link
-                to="/products"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Products
-              </Link>
-
-              <Link
-                to="/categories"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Categories
-              </Link>
-
-              <Link
-                to="/wishlist"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                ♡ Wishlist
-              </Link>
-
-              <Link
-                to="/cart"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                🛒 Cart
-              </Link>
-
-              <Link
-                to="/login"
-                onClick={() => setIsMenuOpen(false)}
-                className="bg-primary text-white px-4 py-2 rounded-lg text-center"
-              >
-                Login
-              </Link>
-
-            </div>
-
-          </div>
-        )}
-
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 }
 

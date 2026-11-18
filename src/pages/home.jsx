@@ -15,17 +15,25 @@ function Home() {
     <div className="bg-[#f5f1e8] text-[#29271f]">
       <section className="relative h-screen min-h-[650px] overflow-hidden">
         {/* Navigation */}
-        <nav className="absolute top-0 left-0 z-30 w-full px-6 md:px-10 py-6">
+        {/* <nav className="absolute top-0 left-0 z-30 w-full px-6 md:px-10 py-6">
           <div className="flex items-center justify-between">
-            {/* Logo */}
             <Link
               to="/"
-              className="text-xl md:text-2xl font-serif tracking-wide text-white"
+              className="
+              font-['Playfair_Display']
+              text-[1.45rem]
+              font-semibold
+              tracking-[0.15em]
+              uppercase
+              text-[#F8F3EA]
+              transition-opacity
+              duration-200
+              hover:opacity-75
+            "
             >
               CROCHET
             </Link>
 
-            {/* Menu */}
             <div className="hidden md:flex items-center gap-8 text-xs tracking-[0.2em] text-white uppercase">
               <Link to="/" className="hover:opacity-60 transition">
                 Home
@@ -44,15 +52,14 @@ function Home() {
               </a>
             </div>
 
-            {/* Mobile menu icon */}
             <button className="md:hidden text-white text-2xl">☰</button>
           </div>
-        </nav>
+        </nav> */}
 
         {/* ================= SPLIT IMAGE ================= */}
         <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2">
           {/* Left Image */}
-          <div className="relative h-full overflow-hidden">
+          <div className="relative overflow-hidden">
             <img
               src={crochetLeft}
               alt="Handmade crochet chair"
@@ -60,11 +67,11 @@ function Home() {
             />
 
             {/* Image overlay */}
-            <div className="absolute inset-0 bg-black/15" />
+            <div className="absolute inset-0 bg-black/20" />
           </div>
 
           {/* Right Image */}
-          <div className="relative h-full overflow-hidden hidden md:block">
+          <div className="relative hidden md:block overflow-hidden">
             <img
               src={crochetRight}
               alt="Crochet yarn and handmade craft"
@@ -76,9 +83,9 @@ function Home() {
         </div>
 
         {/* ================= CENTER CONTENT ================= */}
-        <div className="absolute inset-0 z-20 flex items-center justify-center text-center px-6">
-          <div className="max-w-3xl text-white">
-            <p className="mb-5 text-[10px] md:text-xs tracking-[0.45em] uppercase font-medium">
+        <div className="relative z-10 flex h-full items-center justify-center px-6 text-center">
+          <div className="max-w-4xl text-white">
+            <p className="mb-5 text-[10px] md:text-xs tracking-[0.5em] uppercase font-medium">
               HANDCRAFTED WITH LOVE
             </p>
 
@@ -88,26 +95,40 @@ function Home() {
             Made to Be Loved.
             </h1>
 
-            <p className="mt-6 max-w-md mx-auto text-sm md:text-base leading-relaxed text-white/90">
-            Thoughtfully crafted crochet pieces, made slowly and beautifully for everyday living.
+            <p className="mt-7 max-w-md mx-auto text-sm md:text-base leading-relaxed text-white/90">
+              Modern crochet pieces designed to bring handmade beauty into your everyday style.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/products"
-                className="px-8 py-3 bg-white text-[#29271f] text-xs tracking-[0.2em] uppercase
-                hover:bg-[#29271f] hover:text-white transition duration-300"
+                className="
+                  inline-flex items-center justify-center
+                  px-10 py-4
+                  border border-white/90
+                  bg-white/10
+                  backdrop-blur-md
+                  text-white
+                  text-xs font-semibold uppercase
+                  tracking-[0.25em]
+                  rounded-sm
+                  transition-all duration-300
+                  hover:bg-white
+                  hover:text-black
+                  hover:border-white
+                  hover:scale-105
+                "
               >
-                Shop Collection
+                Shop the collection
               </Link>
 
-              <a
+              {/* <a
                 href="#story"
                 className="px-8 py-3 border border-white text-white text-xs tracking-[0.2em] uppercase
                 hover:bg-white hover:text-[#29271f] transition duration-300"
               >
                 Our Story
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
