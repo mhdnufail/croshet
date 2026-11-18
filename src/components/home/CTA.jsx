@@ -1,40 +1,92 @@
 import { Link } from "react-router-dom";
 import Container from "../Container";
-import Button from "../Button";
 
 function CTA() {
   return (
-    <section className="py-16">
+    <section className="bg-secondary py-20 md:py-28">
       <Container>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
 
-        <div className="bg-primary rounded-3xl px-6 py-12 md:px-12 text-center text-white">
+          {/* Left Content */}
+          <div className="bg-text px-8 py-14 md:px-14 md:py-20 flex flex-col justify-center">
+            <p className="text-accent text-xs font-semibold tracking-[0.35em] uppercase">
+              Made For You
+            </p>
 
-          <p className="text-sm font-semibold tracking-widest">
-            HANDMADE JUST FOR YOU
-          </p>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-black mt-5 leading-[1.05]">
+              Something
+              <br />
+              <span className="italic">special awaits.</span>
+            </h2>
 
-          <h2 className="text-3xl md:text-4xl font-bold mt-3">
-            Find Something Special Today
-          </h2>
+            <p className="text-black/70 max-w-md mt-6 leading-relaxed">
+              Discover handcrafted crochet pieces designed to bring warmth,
+              creativity, and personality into your everyday life.
+            </p>
 
-          <p className="mt-4 text-white/80 max-w-2xl mx-auto">
-            Explore our collection of handmade crochet products
-            and find something unique for yourself or someone special.
-          </p>
-
-          <div className="mt-8">
-            <Link to="/products">
-              <Button
-                variant="secondary"
-                className="px-8"
+            <div className="mt-9">
+              <Link
+                to="/products"
+                className="
+                  inline-flex
+                  items-center
+                  gap-3
+                  bg-white
+                  text-text
+                  px-7
+                  py-3.5
+                  text-xs
+                  font-semibold
+                  tracking-[0.2em]
+                  uppercase
+                  hover:bg-accent
+                  transition
+                  duration-300
+                "
               >
-                Shop Now
-              </Button>
-            </Link>
+                Shop Collection
+                <span className="text-base">→</span>
+              </Link>
+            </div>
           </div>
 
-        </div>
+          {/* Right Visual */}
+          <div className="relative min-h-[400px] bg-primary overflow-hidden">
 
+            <img
+              src="../assets/bags.jpg"
+              alt="Handcrafted crochet bag"
+              className="
+                absolute
+                inset-0
+                w-full
+                h-full
+                object-cover
+                opacity-90
+              "
+            />
+
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-text/35" />
+
+            {/* Decorative Frame */}
+            <div className="absolute inset-6 md:inset-8 border border-white/40" />
+
+            {/* Text */}
+            <div className="absolute inset-0 flex items-end p-10 md:p-14">
+              <div>
+                <p className="text-black text-xs tracking-[0.3em] uppercase font-semibold">
+                  Handmade
+                </p>
+
+                <p className="text-black font-serif text-3xl md:text-4xl mt-2 italic">
+                  With love.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </Container>
     </section>
   );

@@ -5,7 +5,7 @@ import Button from "../Button";
 
 function Hero() {
   return (
-    <section className="bg-secondary">
+    <section className="bg-secondary pt-20">
       <Container>
 
         <div className="min-h-[600px] grid grid-cols-1 lg:grid-cols-2 items-center gap-10 py-16">

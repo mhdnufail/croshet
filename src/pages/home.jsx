@@ -116,7 +116,7 @@ function Home() {
                   hover:bg-white
                   hover:text-black
                   hover:border-white
-                  hover:scale-105
+                  hover:scale-103
                 "
               >
                 Shop the collection
