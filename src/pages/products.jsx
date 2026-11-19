@@ -1,339 +1,436 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Search, SlidersHorizontal, RotateCcw, ArrowUpDown } from "lucide-react";
 import Container from "../components/Container";
+import ProductCard from "../components/ProductCard";
+import Loader from "../components/Loader";
+import { getProducts } from "../services/productService";
 
-const categories = [
-  "All",
-  "Bags",
-  "Flowers",
-  "Toys",
-  "Accessories",
+const CATEGORIES = ["All", "Clothings", "Bags", "Flowers", "Toys", "Accessories"];
+
+const PRICE_FILTERS = [
+  { label: "All Prices", value: "All" },
+  { label: "Under ₹300", value: "under300" },
+  { label: "Under ₹500", value: "under500" },
+  { label: "Under ₹1000", value: "under1000" },
+  { label: "₹1000+", value: "above1000" },
 ];
 
-const products = [
-  {
-    id: 1,
-    name: "Crochet Handbag",
-    category: "Bags",
-    price: 899,
-    rating: 4.8,
-    image: "/images/bags.jpg",
-  },
-  {
-    id: 2,
-    name: "Crochet Flower",
-    category: "Flowers",
-    price: 299,
-    rating: 4.7,
-    image: "/images/flowers.jpg",
-  },
-  {
-    id: 3,
-    name: "Crochet Teddy",
-    category: "Toys",
-    price: 699,
-    rating: 4.9,
-    image: "/images/toys.jpg",
-  },
-  {
-    id: 4,
-    name: "Crochet Hair Bow",
-    category: "Accessories",
-    price: 199,
-    rating: 4.6,
-    image: "/images/crochet-bow.jpg",
-  },
-  {
-    id: 5,
-    name: "Crochet Shoulder Bag",
-    category: "Bags",
-    price: 999,
-    rating: 4.8,
-    image: "/images/crochet-shoulder-bag.jpg",
-  },
-  {
-    id: 6,
-    name: "Crochet Rose",
-    category: "Flowers",
-    price: 349,
-    rating: 4.7,
-    image: "/images/crochet-rose.jpg",
-  },
-  {
-    id: 7,
-    name: "Crochet Bunny",
-    category: "Toys",
-    price: 749,
-    rating: 4.9,
-    image: "/images/crochet-bunny.jpg",
-  },
-  {
-    id: 8,
-    name: "Crochet Headband",
-    category: "Accessories",
-    price: 249,
-    rating: 4.6,
-    image: "/images/crochet-headband.jpg",
-  },
+const SORT_OPTIONS = [
+  { label: "Default", value: "default" },
+  { label: "Price: Low to High", value: "price-asc" },
+  { label: "Price: High to Low", value: "price-desc" },
+  { label: "Rating: High to Low", value: "rating-desc" },
+  { label: "Name: A to Z", value: "name-asc" },
 ];
 
 function Products() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
-  const [maxPrice,setMaxPrice] = useState("All")
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedGender, setSelectedGender] = useState("All");
+  const [priceRange, setPriceRange] = useState("All");
+  const [sortBy, setSortBy] = useState("default");
 
-  const filteredProducts = products.filter((product) => {
-  const matchesSearch = product.name
-    .toLowerCase()
-    .includes(search.toLowerCase());
+  const category = searchParams.get("category") || selectedCategory;
+  const gender = searchParams.get("gender") || selectedGender;
 
-  const matchesCategory =
-    category === "All" || product.category === category;
+  // Debounce search input for silky-smooth responsiveness
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search.trim());
+    }, 250);
 
-  const matchesPrice =
-    maxPrice === "All" || product.price <= Number(maxPrice);
+    return () => clearTimeout(timer);
+  }, [search]);
 
-  return matchesSearch && matchesCategory && matchesPrice;
-  });
+  // Fetch products from JSON Server
+  const fetchProductList = () => {
+    setLoading(true);
+    setError("");
 
-  return (
-    <section className="py-16 bg-background">
-      <Container>
+    getProducts()
+      .then((data) => {
+        setProducts(data || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load products:", err);
+        setError("Unable to load products. Please check if the server is running.");
+        setLoading(false);
+      });
+  };
 
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto">
+  useEffect(() => {
+    let isMounted = true;
 
-          <p className="text-primary font-semibold tracking-wide">
-            OUR COLLECTION
-          </p>
+    getProducts()
+      .then((data) => {
+        if (isMounted) {
+          setProducts(data || []);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load products:", err);
+        if (isMounted) {
+          setError("Unable to load products. Please check if the server is running.");
+          setLoading(false);
+        }
+      });
 
-          <h1 className="text-4xl md:text-5xl font-bold mt-2">
-            Crochet Collection
-          </h1>
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
-          <p className="text-muted mt-4">
-            Discover beautifully handcrafted crochet pieces made
-            with care and creativity.
-          </p>
+  // Filter and sort products
+  const filteredAndSortedProducts = useMemo(() => {
+    let result = products.filter((product) => {
+      // Search filter (case-insensitive)
+      const matchesSearch = debouncedSearch
+        ? product.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+        : true;
 
-        </div>
+      // Category filter
+      const matchesCategory =
+        category === "All" ||
+        product.category?.toLowerCase() === category.toLowerCase();
 
-        {/* Search */}
-        <div className="max-w-xl mx-auto mt-8">
+      // Gender filter (specifically for Clothings / Men / Women)
+      const matchesGender =
+        gender === "All" ||
+        (product.gender &&
+          product.gender.toLowerCase() === gender.toLowerCase()) ||
+        product.name.toLowerCase().includes(gender.toLowerCase());
 
-          <input
-            type="text"
-            placeholder="Search crochet products..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="
-              w-full
-              bg-white
-              border border-gray-200
-              rounded-full
-              px-6 py-3
-              outline-none
-              focus:border-primary
-              focus:ring-2
-              focus:ring-primary/20
-            "
-          />
+      // Price filter
+      let matchesPrice = true;
+      if (priceRange === "under300") {
+        matchesPrice = product.price < 300;
+      } else if (priceRange === "under500") {
+        matchesPrice = product.price < 500;
+      } else if (priceRange === "under1000") {
+        matchesPrice = product.price < 1000;
+      } else if (priceRange === "above1000") {
+        matchesPrice = product.price >= 1000;
+      }
 
-        </div>
+      return matchesSearch && matchesCategory && matchesGender && matchesPrice;
+    });
 
-        {/* Categories */}
-        <div className="flex flex-wrap justify-center gap-3 mt-6">
+    // Sorting
+    if (sortBy === "price-asc") {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price-desc") {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "rating-desc") {
+      result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    } else if (sortBy === "name-asc") {
+      result.sort((a, b) => a.name.localeCompare(b.name));
+    }
 
-          {categories.map((item) => (
-            <button
-              key={item}
-              onClick={() => setCategory(item)}
-              className={`
-                px-5 py-2
-                rounded-full
-                border
-                transition
-                duration-200
-                ${
-                  category === item
-                    ? "bg-primary text-white border-primary"
-                    : "bg-white border-gray-200 text-text hover:border-primary hover:text-primary"
-                }
-              `}
-            >
-              {item}
-            </button>
-          ))}
+    return result;
+  }, [products, debouncedSearch, category, gender, priceRange, sortBy]);
 
-        </div>
+  const handleResetFilters = () => {
+    setSearch("");
+    setDebouncedSearch("");
+    setSelectedCategory("All");
+    setSelectedGender("All");
+    setPriceRange("All");
+    setSortBy("default");
+    setSearchParams({});
+  };
 
-        <div className="flex justify-center mt-5">
-        <select
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
-          className="bg-white border border-gray-200 rounded-lg px-4 py-2 outline-none focus:border-primary"
-        >
-          <option value="All">All Prices</option>
-          <option value="300">Under ₹300</option>
-          <option value="500">Under ₹500</option>
-          <option value="750">Under ₹750</option>
-          <option value="1000">Under ₹1000</option>
-        </select>
-      </div>
+  // Loading state
+  if (loading) {
+    return <Loader fullScreen message="Loading handcrafted pieces..." />;
+  }
 
-        {/* Product Count */}
-        <div className="flex justify-between items-center mt-10 mb-5">
-
-          <p className="text-muted">
-            {filteredProducts.length}{" "}
-            {filteredProducts.length === 1
-              ? "product"
-              : "products"}{" "}
-            found
-          </p>
-
-          {search && (
-            <button
-              onClick={() => setSearch("")}
-              className="text-primary text-sm font-medium hover:underline"
-            >
-              Clear search
-            </button>
-          )}
-
-        </div>
-
-        {/* Products */}
-        {filteredProducts.length > 0 ? (
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            {filteredProducts.map((product) => (
-
-              <div
-                key={product.id}
-                className="
-                  bg-white
-                  rounded-2xl
-                  overflow-hidden
-                  border border-gray-100
-                  hover:shadow-lg
-                  transition duration-300
-                  group
-                "
-              >
-
-                {/* Product Image */}
-                <Link to={`/products/${product.id}`}>
-
-                  <div className="h-72 bg-secondary overflow-hidden">
-
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="
-                        w-full
-                        h-full
-                        object-cover
-                        group-hover:scale-105
-                        transition duration-500
-                      "
-                    />
-
-                  </div>
-
-                </Link>
-
-                {/* Product Info */}
-                <div className="p-5">
-
-                  <p className="text-sm text-primary font-medium">
-                    {product.category}
-                  </p>
-
-                  <Link to={`/products/${product.id}`}>
-
-                    <h2 className="text-lg font-semibold mt-1 hover:text-primary">
-                      {product.name}
-                    </h2>
-
-                  </Link>
-
-                  <div className="flex items-center justify-between mt-4">
-
-                    <span className="text-xl font-bold">
-                      ₹{product.price}
-                    </span>
-
-                    <span className="text-sm text-muted">
-                      ⭐ {product.rating}
-                    </span>
-
-                  </div>
-
-                  <button
-                    className="
-                      w-full
-                      mt-4
-                      bg-primary
-                      text-white
-                      py-2.5
-                      rounded-lg
-                      font-medium
-                      hover:bg-primary-dark
-                      transition
-                    "
-                  >
-                    Add to Cart
-                  </button>
-
-                </div>
-
-              </div>
-
-            ))}
-
-          </div>
-
-        ) : (
-
-          /* No Results */
-          <div className="text-center py-20">
-
-            <div className="text-5xl mb-4">
-              🔍
-            </div>
-
-            <h2 className="text-2xl font-semibold">
-              No products found
+  // Error state
+  if (error) {
+    return (
+      <section className="min-h-[60vh] bg-background flex items-center justify-center py-20">
+        <Container>
+          <div className="text-center max-w-md mx-auto">
+            <h2 className="font-serif text-3xl md:text-4xl text-text">
+              Unable to Load Products
             </h2>
-
-            <p className="text-muted mt-2">
-              Try another search or select a different category.
-            </p>
-
+            <p className="text-muted mt-3 text-sm">{error}</p>
             <button
-              onClick={() => {
-                setSearch("");
-                setCategory("All");
-              }}
+              onClick={fetchProductList}
               className="
                 mt-6
                 bg-primary
                 text-white
-                px-6 py-2.5
+                px-6
+                py-2.5
                 rounded-lg
+                text-xs
+                font-semibold
+                tracking-[0.15em]
+                uppercase
+                hover:bg-primary-dark
+                transition
+              "
+            >
+              Try Again
+            </button>
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
+  const hasActiveFilters =
+    search || category !== "All" || priceRange !== "All" || sortBy !== "default";
+
+  return (
+    <section className="py-16 md:py-24 bg-background min-h-screen">
+      <Container>
+        {/* Editorial Header */}
+        <div className="text-center max-w-2xl mx-auto">
+          <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase">
+            Handcrafted with Care
+          </p>
+
+          <h1 className="font-serif text-4xl md:text-5xl text-text mt-3">
+            Our Crochet Collection
+          </h1>
+
+          <p className="text-muted mt-4 text-sm md:text-base leading-relaxed">
+            Explore unique handmade crochet pieces designed with passion,
+            timeless beauty, and attention to detail.
+          </p>
+        </div>
+
+        {/* Search Bar */}
+        <div className="max-w-xl mx-auto mt-10">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search crochet bags, flowers, toys..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="
+                w-full
+                bg-white
+                text-text
+                text-sm
+                border border-text/15
+                rounded-full
+                pl-12
+                pr-6
+                py-3.5
+                outline-none
+                focus:border-primary
+                focus:ring-2
+                focus:ring-primary/20
+                shadow-sm
+                transition
+              "
+            />
+            <Search
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted"
+            />
+          </div>
+        </div>
+
+        {/* Category Pills */}
+        <div className="flex flex-wrap justify-center gap-2.5 mt-7">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => {
+                setSelectedCategory(cat);
+                if (cat === "All") {
+                  searchParams.delete("category");
+                  setSearchParams(searchParams);
+                } else {
+                  setSearchParams({ category: cat });
+                }
+              }}
+              className={`
+                px-5
+                py-2
+                rounded-full
+                text-xs
+                font-semibold
+                tracking-[0.1em]
+                uppercase
+                border
+                transition-all
+                duration-200
+                ${
+                  category === cat
+                    ? "bg-primary text-white border-primary shadow-sm"
+                    : "bg-white border-text/15 text-text hover:border-primary hover:text-primary"
+                }
+              `}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Gender Filter Options when Clothing is active */}
+        {(category.toLowerCase() === "clothings" || gender !== "All") && (
+          <div className="flex items-center justify-center gap-2 mt-4 animate-in fade-in duration-200">
+            <span className="text-[11px] font-semibold tracking-wider uppercase text-muted mr-1">
+              Clothing for:
+            </span>
+            {["All", "Men", "Women"].map((g) => (
+              <button
+                key={g}
+                type="button"
+                onClick={() => {
+                  setSelectedGender(g);
+                  if (g === "All") {
+                    searchParams.delete("gender");
+                  } else {
+                    searchParams.set("gender", g);
+                  }
+                  setSearchParams(searchParams);
+                }}
+                className={`
+                  px-4 py-1 rounded-full text-xs font-semibold tracking-wide uppercase transition-all
+                  ${
+                    gender === g
+                      ? "bg-text text-white shadow-sm"
+                      : "bg-white text-muted border border-text/15 hover:text-text hover:border-text/30"
+                  }
+                `}
+              >
+                {g === "All" ? "All Styles" : g}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Filters and Sorting Row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pb-6 border-b border-text/10">
+          {/* Left: Product Count */}
+          <div className="flex items-center gap-2 text-sm text-muted">
+            <span className="font-semibold text-text">
+              {filteredAndSortedProducts.length}
+            </span>
+            <span>
+              {filteredAndSortedProducts.length === 1
+                ? "piece found"
+                : "pieces found"}
+            </span>
+          </div>
+
+          {/* Right: Controls (Price filter + Sorting + Reset) */}
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Price Filter */}
+            <div className="flex items-center gap-1.5 bg-white border border-text/15 rounded-lg px-3 py-1.5 text-xs">
+              <SlidersHorizontal size={14} className="text-muted" />
+              <select
+                value={priceRange}
+                onChange={(e) => setPriceRange(e.target.value)}
+                className="bg-transparent text-text outline-none cursor-pointer"
+                aria-label="Filter by price"
+              >
+                {PRICE_FILTERS.map((filter) => (
+                  <option key={filter.value} value={filter.value}>
+                    {filter.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sorting */}
+            <div className="flex items-center gap-1.5 bg-white border border-text/15 rounded-lg px-3 py-1.5 text-xs">
+              <ArrowUpDown size={14} className="text-muted" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="bg-transparent text-text outline-none cursor-pointer"
+                aria-label="Sort products"
+              >
+                {SORT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Clear Filters Button */}
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={handleResetFilters}
+                className="
+                  flex items-center gap-1.5
+                  text-xs font-semibold
+                  tracking-wide
+                  text-primary hover:text-primary-dark
+                  px-2 py-1.5
+                  transition
+                "
+              >
+                <RotateCcw size={13} />
+                <span>Reset</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Product Grid or Empty State */}
+        {filteredAndSortedProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+            {filteredAndSortedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 bg-white/50 rounded-2xl border border-text/10 mt-8 max-w-md mx-auto p-8">
+            <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4 text-primary">
+              <Search size={24} />
+            </div>
+
+            <h3 className="font-serif text-2xl text-text">
+              No products found
+            </h3>
+
+            <p className="text-muted text-sm mt-2 leading-relaxed">
+              We couldn&apos;t find any items matching your current filters. Try
+              adjusting your search terms or clearing filters.
+            </p>
+
+            <button
+              type="button"
+              onClick={handleResetFilters}
+              className="
+                mt-6
+                bg-primary
+                text-white
+                px-6
+                py-2.5
+                rounded-lg
+                text-xs
+                font-semibold
+                tracking-[0.15em]
+                uppercase
                 hover:bg-primary-dark
                 transition
               "
             >
               View All Products
             </button>
-
           </div>
-
         )}
-
       </Container>
     </section>
   );

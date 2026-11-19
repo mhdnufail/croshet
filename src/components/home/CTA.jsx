@@ -54,8 +54,8 @@ function CTA() {
           <div className="relative min-h-[400px] bg-primary overflow-hidden">
 
             <img
-              src="../assets/bags.jpg"
-              alt="Handcrafted crochet bag"
+              src="https://i.pinimg.com/736x/2f/fd/c4/2ffdc451ba22750e987ff2220f08a716.jpg"
+              alt="Men clothing"
               className="
                 absolute
                 inset-0

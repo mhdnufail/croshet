@@ -4,31 +4,36 @@ import Container from "../Container";
 // Import category images
 import bagsImage from "../../assets/bags.jpg";
 import flowersImage from "../../assets/flowers.jpg";
-import toysImage from "../../assets/toys.jpg";
+import clothingImage from "../../assets/cro.jpg";
 import accessoriesImage from "../../assets/accessories.jpg";
 
 const categories = [
   {
     id: 1,
     name: "Crochet Bags",
+    categoryKey: "Bags",
     image: bagsImage,
     description: "Beautiful handmade bags",
   },
   {
     id: 2,
     name: "Crochet Flowers",
+    categoryKey: "Flowers",
     image: flowersImage,
     description: "Flowers that last forever",
   },
   {
     id: 3,
-    name: "Crochet Toys",
-    image: toysImage,
-    description: "Cute handmade toys",
+    name: "Crochet Clothing",
+    categoryKey: "Clothings",
+    image: clothingImage,
+    description: "Handcrafted wear for Men & Women",
+    isClothing: true,
   },
   {
     id: 4,
     name: "Accessories",
+    categoryKey: "Accessories",
     image: accessoriesImage,
     description: "Unique crochet accessories",
   },
@@ -38,10 +43,8 @@ function FeaturedCategories() {
   return (
     <section className="bg-cream py-24 md:py-32 px-6">
       <Container>
-
         {/* Section Heading */}
         <div className="max-w-3xl mx-auto text-center mb-16">
-
           <p className="text-xs tracking-[0.35em] uppercase text-muted mb-5">
             Explore
           </p>
@@ -54,28 +57,16 @@ function FeaturedCategories() {
             Discover thoughtfully handcrafted pieces designed
             to bring a little warmth to everyday life.
           </p>
-
         </div>
 
-        {/* Categories */}
+        {/* Categories Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-
           {categories.map((category) => (
-            <Link
-              key={category.id}
-              to={`/categories/${category.id}`}
-              className="group"
-            >
-
-              <div
-                className="
-                  relative
-                  h-[380px]
-                  overflow-hidden
-                  bg-sand
-                "
+            <div key={category.id} className="relative group">
+              <Link
+                to={`/products?category=${category.categoryKey}`}
+                className="block h-[380px] overflow-hidden bg-sand relative"
               >
-
                 {/* Category Image */}
                 <img
                   src={category.image}
@@ -97,16 +88,15 @@ function FeaturedCategories() {
                   className="
                     absolute
                     inset-0
-                    bg-black/20
+                    bg-black/25
                     transition
                     duration-500
-                    group-hover:bg-black/35
+                    group-hover:bg-black/40
                   "
                 />
 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col justify-end p-7">
-
                   <h3
                     className="
                       text-3xl
@@ -122,27 +112,70 @@ function FeaturedCategories() {
                     {category.description}
                   </p>
 
-                  <span
-                    className="
-                      mt-5
-                      text-[10px]
-                      tracking-[0.3em]
-                      uppercase
-                      text-white
-                    "
-                  >
-                    Explore →
-                  </span>
+                  {/* Inside Clothing: Give Options to Select Men & Women */}
+                  {category.isClothing ? (
+                    <div
+                      className="flex items-center gap-2 mt-4 z-20"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Link
+                        to="/products?category=Clothings&gender=Men"
+                        className="
+                          px-3.5 py-1.5
+                          rounded-full
+                          bg-white/95
+                          text-text
+                          text-[10px]
+                          font-bold
+                          tracking-widest
+                          uppercase
+                          hover:bg-primary
+                          hover:text-white
+                          transition
+                          shadow-sm
+                        "
+                      >
+                        Men
+                      </Link>
 
+                      <Link
+                        to="/products?category=Clothings&gender=Women"
+                        className="
+                          px-3.5 py-1.5
+                          rounded-full
+                          bg-white/95
+                          text-text
+                          text-[10px]
+                          font-bold
+                          tracking-widest
+                          uppercase
+                          hover:bg-primary
+                          hover:text-white
+                          transition
+                          shadow-sm
+                        "
+                      >
+                        Women
+                      </Link>
+                    </div>
+                  ) : (
+                    <span
+                      className="
+                        mt-5
+                        text-[10px]
+                        tracking-[0.3em]
+                        uppercase
+                        text-white
+                      "
+                    >
+                      Explore →
+                    </span>
+                  )}
                 </div>
-
-              </div>
-
-            </Link>
+              </Link>
+            </div>
           ))}
-
         </div>
-
       </Container>
     </section>
   );

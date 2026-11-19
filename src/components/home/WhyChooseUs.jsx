@@ -5,137 +5,110 @@ const features = [
     number: "01",
     title: "Handcrafted",
     description:
-      "Every piece is carefully crocheted by hand with patience, creativity, and attention to detail.",
+      "Every piece is carefully crocheted by hand with patience and attention to detail.",
   },
   {
     number: "02",
     title: "Made With Love",
     description:
-      "We believe handmade products carry something special — a little more warmth and a lot more personality.",
+      "Thoughtfully created pieces with warmth, personality, and a handmade touch.",
   },
   {
     number: "03",
     title: "Quality First",
     description:
-      "From the yarn we choose to the final stitch, we focus on creating pieces designed to last.",
+      "From the yarn to the final stitch, we focus on quality that lasts.",
   },
   {
     number: "04",
     title: "Uniquely Yours",
     description:
-      "Small variations make every handmade piece unique, giving your product its own character.",
+      "Small handmade variations make every piece one of a kind.",
   },
 ];
 
 function WhyChooseUs() {
   return (
-    <section className="bg-secondary py-24">
+    <section className="bg-secondary py-20 md:py-28">
       <Container>
 
-        {/* Intro */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
+        {/* Header */}
+        <div className="max-w-3xl mb-14 md:mb-20">
+          <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase">
+            The Crochet Difference
+          </p>
 
-          <div>
-            <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase">
-              The Crochet Difference
-            </p>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-text mt-4 leading-[1.05]">
+            Made with care.
+            <br />
+            <span className="italic">Made to be loved.</span>
+          </h2>
 
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-text mt-4 leading-tight">
-              Made slowly.
-              <br />
-              Made beautifully.
-            </h2>
-          </div>
-
-          <div>
-            <p className="text-muted text-lg leading-relaxed max-w-xl">
-              In a world of mass production, we choose to make things
-              differently. Each crochet piece is thoughtfully created by hand,
-              giving it the character that only handmade work can have.
-            </p>
-          </div>
-
+          <p className="text-muted max-w-xl mt-6 text-base md:text-lg leading-relaxed">
+            Every piece has a story behind it. We create slowly, thoughtfully,
+            and by hand — so what you receive feels truly special.
+          </p>
         </div>
 
         {/* Features */}
-        <div className="mt-16 border-t border-text/15">
-
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {features.map((feature) => (
             <div
               key={feature.number}
               className="
                 group
-                grid
-                grid-cols-1
-                md:grid-cols-[100px_1fr_1.5fr]
-                gap-6
-                md:gap-10
-                py-8
-                border-b
-                border-text/15
-                transition
-                hover:bg-background/40
-                px-2
+                bg-background
+                border
+                border-text/10
+                p-7
+                md:p-8
+                min-h-[280px]
+                flex
+                flex-col
+                justify-between
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:border-primary/40
               "
             >
+              <div>
+                <span className="text-primary text-xs font-semibold tracking-[0.2em]">
+                  {feature.number}
+                </span>
 
-              {/* Number */}
-              <span
-                className="
-                  text-primary
-                  text-sm
-                  font-semibold
-                  tracking-[0.15em]
-                "
-              >
-                {feature.number}
-              </span>
+                <div className="w-8 h-px bg-primary/50 mt-6 mb-6" />
 
-              {/* Title */}
-              <h3
-                className="
-                  font-serif
-                  text-2xl
-                  md:text-3xl
-                  text-text
-                  group-hover:text-primary
-                  transition
-                "
-              >
-                {feature.title}
-              </h3>
+                <h3
+                  className="
+                    font-serif
+                    text-2xl
+                    md:text-3xl
+                    text-text
+                    group-hover:text-primary
+                    transition
+                  "
+                >
+                  {feature.title}
+                </h3>
+              </div>
 
-              {/* Description */}
-              <p
-                className="
-                  text-muted
-                  leading-relaxed
-                  max-w-lg
-                "
-              >
+              <p className="text-muted text-sm leading-relaxed mt-8">
                 {feature.description}
               </p>
-
             </div>
           ))}
-
         </div>
 
-        {/* Bottom Statement */}
-        <div className="mt-16 flex justify-center">
-          <p
-            className="
-              font-serif
-              text-2xl
-              md:text-3xl
-              italic
-              text-text
-              text-center
-              max-w-3xl
-            "
-          >
-            "Because the things you keep should feel a little more personal."
+        {/* Bottom statement */}
+        <div className="mt-14 md:mt-16 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="h-px bg-text/15 flex-1 hidden md:block" />
+
+          <p className="font-serif italic text-xl md:text-2xl text-text text-center px-6">
+            "Handmade feels different."
           </p>
+
+          <div className="h-px bg-text/15 flex-1 hidden md:block" />
         </div>
 
       </Container>

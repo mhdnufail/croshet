@@ -8,7 +8,17 @@
   --color-sage: #A59A76;
   --color-forest: #35372B;
   --color-white: #FFFFFF;
+
+ 
+  --color-primary: #8B5E3C;
+  --color-primary-dark: #6F472D;
+  --color-secondary: #F5EBE0;
+  --color-accent: #D9A679;
+  --color-background: #FFF8F0;
+  --color-text: #2F241F;
+  --color-muted: #756A64;
 }
+
 
 /* Global styles */
 

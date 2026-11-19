@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 // import crochetLeft from "../src/assets/croshet-left.jpg";

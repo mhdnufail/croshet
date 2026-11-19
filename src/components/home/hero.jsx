@@ -37,9 +37,9 @@ function Hero() {
                 </Button>
               </Link>
 
-              <Link to="/categories">
+              <Link to="/products">
                 <Button variant="outline">
-                  Explore Categories
+                  Explore Collection
                 </Button>
               </Link>
 

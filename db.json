@@ -1,0 +1,103 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Crochet Handbag",
+      "category": "Bags",
+      "price": 899,
+      "rating": 4.8,
+      "image": "/images/crochet-bag.jpg",
+      "description": "A beautifully handcrafted crochet handbag designed for everyday use. Made with care, creativity, and attention to detail."
+    },
+    {
+      "id": "2",
+      "name": "Crochet Flower",
+      "category": "Flowers",
+      "price": 299,
+      "rating": 4.7,
+      "image": "/images/crochet-flower.jpg",
+      "description": "A beautiful handmade crochet flower that adds a charming and creative touch to any space."
+    },
+    {
+      "id": "3",
+      "name": "Men's Crochet Knit Sweater",
+      "category": "Clothings",
+      "gender": "Men",
+      "price": 1499,
+      "rating": 4.9,
+      "image": "/images/crochet-men-sweater.jpg",
+      "description": "An artisanal handmade crochet knit sweater tailored for men. Crafted with warm premium yarn, structured stitchwork, and a relaxed modern fit."
+    },
+    {
+      "id": "4",
+      "name": "Crochet Hair Bow",
+      "category": "Accessories",
+      "price": 199,
+      "rating": 4.6,
+      "image": "/images/crochet-bow.jpg",
+      "description": "A cute handmade crochet hair bow designed to add a stylish and playful touch to your look."
+    },
+    {
+      "id": "5",
+      "name": "Crochet Shoulder Bag",
+      "category": "Bags",
+      "price": 999,
+      "rating": 4.8,
+      "image": "/images/crochet-shoulder-bag.jpg",
+      "description": "A stylish handmade crochet shoulder bag that combines everyday functionality with a unique handmade look."
+    },
+    {
+      "id": "6",
+      "name": "Crochet Rose",
+      "category": "Flowers",
+      "price": 349,
+      "rating": 4.7,
+      "image": "/images/crochet-rose.jpg",
+      "description": "A handcrafted crochet rose designed to stay beautiful for a long time without fading."
+    },
+    {
+      "id": "7",
+      "name": "Crochet Bunny",
+      "category": "Toys",
+      "price": 749,
+      "rating": 4.9,
+      "image": "/images/crochet-bunny.jpg",
+      "description": "A cute handmade crochet bunny, carefully crafted with soft yarn and attention to detail."
+    },
+    {
+      "id": "8",
+      "name": "Crochet Headband",
+      "category": "Accessories",
+      "price": 249,
+      "rating": 4.6,
+      "image": "/images/crochet-headband.jpg",
+      "description": "A comfortable handmade crochet headband that adds a simple and stylish touch to any outfit."
+    },
+    {
+      "id": "9",
+      "name": "Women's Crochet Cardigan",
+      "category": "Clothings",
+      "gender": "Women",
+      "price": 1399,
+      "rating": 4.8,
+      "image": "/images/crochet-women-cardigan.jpg",
+      "description": "A charming handmade crochet cardigan designed for women. Features delicate floral motifs, warm ribbed trim, and a comfortable drape."
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Muhammed",
+      "email": "test@gmail.com",
+      "password": "123456"
+    },
+    {
+      "name": "Muhammed Nufail",
+      "email": "mhdnufail07@gmail.com",
+      "password": "nufail@123",
+      "id": "r6H8fKbLJx0"
+    }
+  ],
+  "orders": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}
