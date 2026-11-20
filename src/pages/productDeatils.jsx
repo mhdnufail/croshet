@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Heart, ShoppingBag, ArrowLeft, Star, Check } from "lucide-react";
+import { Heart, ShoppingBag, ArrowLeft, Star, Check, Zap } from "lucide-react";
 import Container from "../components/Container";
 import Loader from "../components/Loader";
 import { addToCart } from "../store/cartSlice";
@@ -23,9 +23,15 @@ function ProductDetails() {
   const [error, setError] = useState("");
   const [justAdded, setJustAdded] = useState(false);
 
+  const cartItems = useSelector((state) => state.cart.items);
   const wishlistItems = useSelector((state) => state.wishlist.items);
+
+  const isInCart = product
+    ? cartItems.some((item) => String(item.id) === String(product.id))
+    : false;
+
   const isWishlisted = product
-    ? wishlistItems.some((item) => item.id === product.id)
+    ? wishlistItems.some((item) => String(item.id) === String(product.id))
     : false;
 
   // Fetch product from JSON Server
@@ -65,6 +71,11 @@ function ProductDetails() {
   const handleAddToCart = () => {
     if (!product) return;
 
+    if (isInCart) {
+      showToast(`"${product.name}" is already in your cart`, "info");
+      return;
+    }
+
     if (!user) {
       navigate(`/login?redirect=/products/${product.id}`);
       return;
@@ -85,6 +96,27 @@ function ProductDetails() {
     setTimeout(() => {
       setJustAdded(false);
     }, 2000);
+  };
+
+  const handleBuyNow = () => {
+    if (!product) return;
+
+    // If not in cart, add it once with selected quantity
+    if (!isInCart) {
+      dispatch(
+        addToCart({
+          ...product,
+          quantity: quantity,
+        })
+      );
+    }
+
+    if (!user) {
+      navigate(`/login?redirect=/checkout`);
+      return;
+    }
+
+    navigate("/checkout");
   };
 
   const handleToggleWishlist = () => {
@@ -234,107 +266,206 @@ function ProductDetails() {
               </p>
             </div>
 
-            {/* Quantity Selector */}
-            <div className="mt-8">
-              <label
-                htmlFor="product-quantity"
-                className="block text-xs font-semibold tracking-[0.2em] uppercase text-text mb-3"
-              >
-                Quantity
-              </label>
-
-              <div className="flex items-center border border-text/20 rounded-lg w-fit overflow-hidden bg-white">
-                <button
-                  type="button"
-                  onClick={handleDecreaseQuantity}
-                  aria-label="Decrease quantity"
-                  disabled={quantity <= 1}
-                  className="
-                    w-11
-                    h-11
-                    text-base
-                    text-text
-                    hover:bg-secondary
-                    disabled:opacity-40
-                    disabled:cursor-not-allowed
-                    transition
-                    flex
-                    items-center
-                    justify-center
-                  "
+            {/* Quantity Selector: only show when not in cart yet */}
+            {!isInCart ? (
+              <div className="mt-8">
+                <label
+                  htmlFor="product-quantity"
+                  className="block text-xs font-semibold tracking-[0.2em] uppercase text-text mb-3"
                 >
-                  −
-                </button>
+                  Quantity
+                </label>
 
-                <span
-                  id="product-quantity"
-                  className="w-14 text-center font-medium text-text text-sm select-none"
-                >
-                  {quantity}
-                </span>
+                <div className="flex items-center border border-text/20 rounded-lg w-fit overflow-hidden bg-white">
+                  <button
+                    type="button"
+                    onClick={handleDecreaseQuantity}
+                    aria-label="Decrease quantity"
+                    disabled={quantity <= 1}
+                    className="
+                      w-11
+                      h-11
+                      text-base
+                      text-text
+                      hover:bg-secondary
+                      disabled:opacity-40
+                      disabled:cursor-not-allowed
+                      transition
+                      flex
+                      items-center
+                      justify-center
+                    "
+                  >
+                    −
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={handleIncreaseQuantity}
-                  aria-label="Increase quantity"
-                  className="
-                    w-11
-                    h-11
-                    text-base
-                    text-text
-                    hover:bg-secondary
-                    transition
-                    flex
-                    items-center
-                    justify-center
-                  "
-                >
-                  +
-                </button>
+                  <span
+                    id="product-quantity"
+                    className="w-14 text-center font-medium text-text text-sm select-none"
+                  >
+                    {quantity}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={handleIncreaseQuantity}
+                    aria-label="Increase quantity"
+                    className="
+                      w-11
+                      h-11
+                      text-base
+                      text-text
+                      hover:bg-secondary
+                      transition
+                      flex
+                      items-center
+                      justify-center
+                    "
+                  >
+                    +
+                  </button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="mt-6 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+                <Check size={16} className="text-emerald-600 shrink-0" />
+                <span>
+                  This item is already added to your cart (1 item limit per product).
+                </span>
+              </div>
+            )}
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3 mt-8">
-              {/* Add to Cart */}
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                className={`
-                  flex-1
-                  py-4
-                  px-6
-                  rounded-lg
-                  text-xs
-                  font-semibold
-                  tracking-[0.2em]
-                  uppercase
-                  transition-all
-                  duration-300
-                  flex
-                  items-center
-                  justify-center
-                  gap-2.5
-                  shadow-sm
-                  ${
-                    justAdded
-                      ? "bg-green-700 text-white"
-                      : "bg-primary text-white hover:bg-primary-dark"
-                  }
-                `}
-              >
-                {justAdded ? (
-                  <>
-                    <Check size={16} />
-                    <span>Added to Cart</span>
-                  </>
-                ) : (
-                  <>
+            {/* Action Buttons: Add to Cart / Buy Now / Wishlist */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-8">
+              {isInCart ? (
+                /* Already in cart: show Buy Now as main button */
+                <>
+                  <button
+                    type="button"
+                    onClick={handleBuyNow}
+                    className="
+                      flex-1
+                      py-4
+                      px-6
+                      rounded-lg
+                      text-xs
+                      font-bold
+                      tracking-[0.2em]
+                      uppercase
+                      bg-primary
+                      text-white
+                      hover:bg-primary-dark
+                      transition-all
+                      duration-300
+                      flex
+                      items-center
+                      justify-center
+                      gap-2.5
+                      shadow-md
+                    "
+                  >
+                    <Zap size={16} className="fill-current" />
+                    <span>Buy Now</span>
+                  </button>
+
+                  <Link
+                    to="/cart"
+                    className="
+                      py-4
+                      px-6
+                      rounded-lg
+                      text-xs
+                      font-bold
+                      tracking-[0.15em]
+                      uppercase
+                      bg-secondary
+                      text-text
+                      hover:bg-text
+                      hover:text-white
+                      border border-text/15
+                      transition-all
+                      duration-300
+                      flex
+                      items-center
+                      justify-center
+                      gap-2
+                    "
+                  >
                     <ShoppingBag size={16} />
-                    <span>Add to Cart ({quantity})</span>
-                  </>
-                )}
-              </button>
+                    <span>View Cart</span>
+                  </Link>
+                </>
+              ) : (
+                /* Not in cart: show both Add to Cart and Buy Now */
+                <>
+                  <button
+                    type="button"
+                    onClick={handleAddToCart}
+                    className={`
+                      flex-1
+                      py-4
+                      px-6
+                      rounded-lg
+                      text-xs
+                      font-bold
+                      tracking-[0.2em]
+                      uppercase
+                      transition-all
+                      duration-300
+                      flex
+                      items-center
+                      justify-center
+                      gap-2.5
+                      shadow-sm
+                      ${
+                        justAdded
+                          ? "bg-green-700 text-white"
+                          : "bg-secondary text-text border border-text/20 hover:bg-text hover:text-white"
+                      }
+                    `}
+                  >
+                    {justAdded ? (
+                      <>
+                        <Check size={16} />
+                        <span>Added to Cart</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag size={16} />
+                        <span>Add to Cart ({quantity})</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleBuyNow}
+                    className="
+                      flex-1
+                      py-4
+                      px-6
+                      rounded-lg
+                      text-xs
+                      font-bold
+                      tracking-[0.2em]
+                      uppercase
+                      bg-primary
+                      text-white
+                      hover:bg-primary-dark
+                      transition-all
+                      duration-300
+                      flex
+                      items-center
+                      justify-center
+                      gap-2.5
+                      shadow-sm
+                    "
+                  >
+                    <Zap size={16} className="fill-current" />
+                    <span>Buy Now</span>
+                  </button>
+                </>
+              )}
 
               {/* Wishlist Button */}
               <button
@@ -350,6 +481,7 @@ function ProductDetails() {
                   justify-center
                   transition-all
                   duration-200
+                  shrink-0
                   ${
                     isWishlisted
                       ? "bg-red-50 border-red-300 text-red-600"

@@ -1,6 +1,13 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, RotateCcw, ArrowUpDown } from "lucide-react";
+import {
+  Search,
+  SlidersHorizontal,
+  RotateCcw,
+  ArrowUpDown,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import Container from "../components/Container";
 import ProductCard from "../components/ProductCard";
 import Loader from "../components/Loader";
@@ -24,6 +31,8 @@ const SORT_OPTIONS = [
   { label: "Name: A to Z", value: "name-asc" },
 ];
 
+const ITEMS_PER_PAGE = 8;
+
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -37,11 +46,12 @@ function Products() {
   const [selectedGender, setSelectedGender] = useState("All");
   const [priceRange, setPriceRange] = useState("All");
   const [sortBy, setSortBy] = useState("default");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const category = searchParams.get("category") || selectedCategory;
   const gender = searchParams.get("gender") || selectedGender;
 
-  // Debounce search input for silky-smooth responsiveness
+  // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search.trim());
@@ -139,6 +149,30 @@ function Products() {
     return result;
   }, [products, debouncedSearch, category, gender, priceRange, sortBy]);
 
+  // Pagination calculation
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE)
+  );
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const startIndex = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(
+    startIndex + ITEMS_PER_PAGE,
+    filteredAndSortedProducts.length
+  );
+  const currentPaginatedProducts = filteredAndSortedProducts.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    const target = document.getElementById("collection-grid-top");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const handleResetFilters = () => {
     setSearch("");
     setDebouncedSearch("");
@@ -146,6 +180,7 @@ function Products() {
     setSelectedGender("All");
     setPriceRange("All");
     setSortBy("default");
+    setCurrentPage(1);
     setSearchParams({});
   };
 
@@ -190,7 +225,17 @@ function Products() {
   }
 
   const hasActiveFilters =
-    search || category !== "All" || priceRange !== "All" || sortBy !== "default";
+    search ||
+    category !== "All" ||
+    gender !== "All" ||
+    priceRange !== "All" ||
+    sortBy !== "default";
+
+  // Build page numbers array
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <section className="py-16 md:py-24 bg-background min-h-screen">
@@ -216,9 +261,12 @@ function Products() {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search crochet bags, flowers, toys..."
+              placeholder="Search crochet bags, flowers, clothing..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
               className="
                 w-full
                 bg-white
@@ -252,6 +300,7 @@ function Products() {
               type="button"
               onClick={() => {
                 setSelectedCategory(cat);
+                setCurrentPage(1);
                 if (cat === "All") {
                   searchParams.delete("category");
                   setSearchParams(searchParams);
@@ -294,6 +343,7 @@ function Products() {
                 type="button"
                 onClick={() => {
                   setSelectedGender(g);
+                  setCurrentPage(1);
                   if (g === "All") {
                     searchParams.delete("gender");
                   } else {
@@ -316,17 +366,22 @@ function Products() {
           </div>
         )}
 
-        {/* Filters and Sorting Row */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pb-6 border-b border-text/10">
-          {/* Left: Product Count */}
+        {/* Filters and Sorting Row (Anchor for scroll) */}
+        <div
+          id="collection-grid-top"
+          className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pb-6 border-b border-text/10 scroll-mt-28"
+        >
+          {/* Left: Product Count and Current Page Range */}
           <div className="flex items-center gap-2 text-sm text-muted">
             <span className="font-semibold text-text">
-              {filteredAndSortedProducts.length}
+              {filteredAndSortedProducts.length > 0
+                ? `Showing ${startIndex + 1}–${endIndex} of ${filteredAndSortedProducts.length}`
+                : "0"}
             </span>
             <span>
               {filteredAndSortedProducts.length === 1
-                ? "piece found"
-                : "pieces found"}
+                ? "piece"
+                : "pieces"}
             </span>
           </div>
 
@@ -337,7 +392,10 @@ function Products() {
               <SlidersHorizontal size={14} className="text-muted" />
               <select
                 value={priceRange}
-                onChange={(e) => setPriceRange(e.target.value)}
+                onChange={(e) => {
+                  setPriceRange(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="bg-transparent text-text outline-none cursor-pointer"
                 aria-label="Filter by price"
               >
@@ -354,7 +412,10 @@ function Products() {
               <ArrowUpDown size={14} className="text-muted" />
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => {
+                  setSortBy(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="bg-transparent text-text outline-none cursor-pointer"
                 aria-label="Sort products"
               >
@@ -388,12 +449,99 @@ function Products() {
         </div>
 
         {/* Product Grid or Empty State */}
-        {filteredAndSortedProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-            {filteredAndSortedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+        {currentPaginatedProducts.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+              {currentPaginatedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+
+            {/* ================= PAGINATION CONTROLS ================= */}
+            {totalPages > 1 && (
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-14 pt-8 border-t border-text/10">
+                {/* Page indicator info */}
+                <p className="text-xs text-muted font-medium tracking-wider uppercase">
+                  Page <strong className="text-text">{safeCurrentPage}</strong> of{" "}
+                  <strong className="text-text">{totalPages}</strong>
+                </p>
+
+                {/* Page button controls */}
+                <div className="flex items-center gap-2">
+                  {/* Previous Button */}
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(safeCurrentPage - 1)}
+                    disabled={safeCurrentPage <= 1}
+                    className="
+                      inline-flex items-center gap-1.5
+                      px-3.5 py-2
+                      rounded-lg
+                      border border-text/15
+                      bg-white text-text
+                      text-xs font-bold tracking-wider uppercase
+                      hover:border-primary hover:text-primary
+                      disabled:opacity-40 disabled:cursor-not-allowed
+                      disabled:hover:border-text/15 disabled:hover:text-text
+                      transition shadow-sm
+                    "
+                    aria-label="Previous page"
+                  >
+                    <ChevronLeft size={16} />
+                    <span>Prev</span>
+                  </button>
+
+                  {/* Page Numbers */}
+                  <div className="flex items-center gap-1.5">
+                    {pageNumbers.map((num) => (
+                      <button
+                        key={num}
+                        type="button"
+                        onClick={() => handlePageChange(num)}
+                        className={`
+                          w-9 h-9
+                          rounded-lg
+                          text-xs font-bold
+                          transition shadow-sm
+                          flex items-center justify-center
+                          ${
+                            safeCurrentPage === num
+                              ? "bg-primary text-white border border-primary"
+                              : "bg-white text-text border border-text/15 hover:border-primary hover:text-primary"
+                          }
+                        `}
+                      >
+                        {num}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Next Button */}
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(safeCurrentPage + 1)}
+                    disabled={safeCurrentPage >= totalPages}
+                    className="
+                      inline-flex items-center gap-1.5
+                      px-3.5 py-2
+                      rounded-lg
+                      border border-text/15
+                      bg-white text-text
+                      text-xs font-bold tracking-wider uppercase
+                      hover:border-primary hover:text-primary
+                      disabled:opacity-40 disabled:cursor-not-allowed
+                      disabled:hover:border-text/15 disabled:hover:text-text
+                      transition shadow-sm
+                    "
+                    aria-label="Next page"
+                  >
+                    <span>Next</span>
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <div className="text-center py-20 bg-white/50 rounded-2xl border border-text/10 mt-8 max-w-md mx-auto p-8">
             <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4 text-primary">

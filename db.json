@@ -6,7 +6,7 @@
       "category": "Bags",
       "price": 899,
       "rating": 4.8,
-      "image": "/images/crochet-bag.jpg",
+      "image": "https://i.pinimg.com/736x/75/49/6f/75496f9217714d1399f70abd6cb91a67.jpg",
       "description": "A beautifully handcrafted crochet handbag designed for everyday use. Made with care, creativity, and attention to detail."
     },
     {
@@ -15,7 +15,7 @@
       "category": "Flowers",
       "price": 299,
       "rating": 4.7,
-      "image": "/images/crochet-flower.jpg",
+      "image": "https://i.pinimg.com/1200x/a5/d3/09/a5d3092f107aeee04cb25a56813a424a.jpg",
       "description": "A beautiful handmade crochet flower that adds a charming and creative touch to any space."
     },
     {
@@ -25,7 +25,7 @@
       "gender": "Men",
       "price": 1499,
       "rating": 4.9,
-      "image": "/images/crochet-men-sweater.jpg",
+      "image": "https://i.pinimg.com/1200x/e6/c1/a9/e6c1a980aa4437f51df5855489844eaf.jpg",
       "description": "An artisanal handmade crochet knit sweater tailored for men. Crafted with warm premium yarn, structured stitchwork, and a relaxed modern fit."
     },
     {
@@ -34,7 +34,7 @@
       "category": "Accessories",
       "price": 199,
       "rating": 4.6,
-      "image": "/images/crochet-bow.jpg",
+      "image": "https://i.pinimg.com/1200x/c1/41/b2/c141b2c4348d66ebfb5ed775590ab4a2.jpg",
       "description": "A cute handmade crochet hair bow designed to add a stylish and playful touch to your look."
     },
     {
@@ -43,7 +43,7 @@
       "category": "Bags",
       "price": 999,
       "rating": 4.8,
-      "image": "/images/crochet-shoulder-bag.jpg",
+      "image": "https://i.pinimg.com/736x/75/49/6f/75496f9217714d1399f70abd6cb91a67.jpg",
       "description": "A stylish handmade crochet shoulder bag that combines everyday functionality with a unique handmade look."
     },
     {
@@ -52,7 +52,7 @@
       "category": "Flowers",
       "price": 349,
       "rating": 4.7,
-      "image": "/images/crochet-rose.jpg",
+      "image": "https://i.pinimg.com/1200x/a5/5b/46/a55b463aad024e1e5d66c7d47d458a4d.jpg",
       "description": "A handcrafted crochet rose designed to stay beautiful for a long time without fading."
     },
     {
@@ -61,7 +61,7 @@
       "category": "Toys",
       "price": 749,
       "rating": 4.9,
-      "image": "/images/crochet-bunny.jpg",
+      "image": "https://i.pinimg.com/736x/1f/88/b3/1f88b31a440d389137f6bc0d8546fbb0.jpg",
       "description": "A cute handmade crochet bunny, carefully crafted with soft yarn and attention to detail."
     },
     {
@@ -82,6 +82,108 @@
       "rating": 4.8,
       "image": "/images/crochet-women-cardigan.jpg",
       "description": "A charming handmade crochet cardigan designed for women. Features delicate floral motifs, warm ribbed trim, and a comfortable drape."
+    },
+    {
+      "id": "10",
+      "name": "Men's Crochet Polo Shirt",
+      "category": "Clothings",
+      "gender": "Men",
+      "price": 1199,
+      "rating": 4.7,
+      "image": "/images/crochet-men-sweater.jpg",
+      "description": "A stylish men's casual crochet polo shirt, lightweight, breathable, and handmade with 100% cotton yarn."
+    },
+    {
+      "id": "11",
+      "name": "Women's Crochet Summer Top",
+      "category": "Clothings",
+      "gender": "Women",
+      "price": 899,
+      "rating": 4.8,
+      "image": "/images/crochet-women-cardigan.jpg",
+      "description": "Breezy and elegant handmade crochet crop top for women, perfect for warm sunny days and outings."
+    },
+    {
+      "id": "12",
+      "name": "Crochet Sunflower Bouquet",
+      "category": "Flowers",
+      "price": 449,
+      "rating": 4.9,
+      "image": "/images/crochet-flower.jpg",
+      "description": "A vibrant handmade crochet sunflower bouquet that brings everlasting sunshine and joy to your living space."
+    },
+    {
+      "id": "13",
+      "name": "Crochet Daisy Pot",
+      "category": "Flowers",
+      "price": 399,
+      "rating": 4.7,
+      "image": "/images/crochet-rose.jpg",
+      "description": "A charming handmade crochet daisy in a mini knitted soil pot, ideal for gifting and desk decor."
+    },
+    {
+      "id": "14",
+      "name": "Crochet Everyday Tote Bag",
+      "category": "Bags",
+      "price": 799,
+      "rating": 4.8,
+      "image": "/images/crochet-bag.jpg",
+      "description": "A spacious and sturdy handmade crochet tote bag with braided handles, perfect for everyday errands and books."
+    },
+    {
+      "id": "15",
+      "name": "Crochet Mini Crossbody Bag",
+      "category": "Bags",
+      "price": 649,
+      "rating": 4.6,
+      "image": "/images/crochet-shoulder-bag.jpg",
+      "description": "A cute mini crossbody crochet purse with a brass zip, cotton lining, and comfortable shoulder strap."
+    },
+    {
+      "id": "16",
+      "name": "Crochet Teddy with Scarf",
+      "category": "Toys",
+      "price": 799,
+      "rating": 4.9,
+      "image": "/images/crochet-teddy.jpg",
+      "description": "An ultra-soft handmade crochet teddy bear bundled up with a cozy mini knit scarf, perfect for gifting."
+    },
+    {
+      "id": "17",
+      "name": "Crochet Amigurumi Dino",
+      "category": "Toys",
+      "price": 699,
+      "rating": 4.8,
+      "image": "/images/crochet-bunny.jpg",
+      "description": "A playful handcrafted crochet amigurumi dinosaur made with hypoallergenic, baby-safe plush yarn."
+    },
+    {
+      "id": "18",
+      "name": "Crochet Floral Keychain Charm",
+      "category": "Accessories",
+      "price": 149,
+      "rating": 4.5,
+      "image": "/images/crochet-bow.jpg",
+      "description": "An adorable mini crochet flower and fruit keychain charm with a durable antique brass lobster clasp."
+    },
+    {
+      "id": "19",
+      "name": "Crochet Pearl Hairband",
+      "category": "Accessories",
+      "price": 329,
+      "rating": 4.7,
+      "image": "/images/crochet-headband.jpg",
+      "description": "An elegant artisanal crochet headband embellished with hand-stitched faux pearls and soft velvet backing."
+    },
+    {
+      "id": "20",
+      "name": "Men's Crochet Zip Cardigan",
+      "category": "Clothings",
+      "gender": "Men",
+      "price": 1799,
+      "rating": 4.9,
+      "image": "/images/crochet-clothing.jpg",
+      "description": "Heavyweight artisan crochet zip cardigan jacket for men, crafted with a rich textured wool-cotton blend."
     }
   ],
   "users": [
@@ -95,9 +197,73 @@
       "name": "Muhammed Nufail",
       "email": "mhdnufail07@gmail.com",
       "password": "nufail@123",
-      "id": "r6H8fKbLJx0"
+      "id": "r6H8fKbLJx0",
+      "phone": "+91 92070 09383",
+      "address": "ytrfd",
+      "city": "vadakara ,kozhikode",
+      "state": "kerela",
+      "pincode": "890654"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "userId": "r6H8fKbLJx0",
+      "userEmail": "mhdnufail07@gmail.com",
+      "items": [
+        {
+          "id": "3",
+          "name": "Men's Crochet Knit Sweater",
+          "category": "Clothings",
+          "price": 1499,
+          "quantity": 1,
+          "image": "https://i.pinimg.com/1200x/e6/c1/a9/e6c1a980aa4437f51df5855489844eaf.jpg"
+        }
+      ],
+      "subtotal": 1499,
+      "delivery": 0,
+      "total": 1499,
+      "shippingAddress": {
+        "name": "Muhammed Nufail",
+        "phone": "5448445485",
+        "address": "iuhuuohyihi.ojni",
+        "city": "vadakara ,kozhikode",
+        "state": "kerela",
+        "pincode": "123456"
+      },
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-11-20T03:53:11.717Z",
+      "id": "aWvgK93VdGI"
+    },
+    {
+      "userId": "r6H8fKbLJx0",
+      "userEmail": "mhdnufail07@gmail.com",
+      "items": [
+        {
+          "id": "3",
+          "name": "Men's Crochet Knit Sweater",
+          "category": "Clothings",
+          "price": 1499,
+          "quantity": 2,
+          "image": "https://i.pinimg.com/1200x/e6/c1/a9/e6c1a980aa4437f51df5855489844eaf.jpg"
+        }
+      ],
+      "subtotal": 2998,
+      "delivery": 0,
+      "total": 2998,
+      "shippingAddress": {
+        "name": "Muhammed Nufail",
+        "phone": "9207009383",
+        "address": "hgiuyilolk",
+        "city": "vadakara ,kozhikode",
+        "state": "kerela",
+        "pincode": "123456"
+      },
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-11-20T03:54:23.551Z",
+      "id": "I__t1n0Kkhc"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

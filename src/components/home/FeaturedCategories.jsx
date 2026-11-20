@@ -26,7 +26,7 @@ const categories = [
     id: 3,
     name: "Crochet Clothing",
     categoryKey: "Clothings",
-    image: clothingImage,
+    image: "https://i.pinimg.com/736x/48/af/9d/48af9d4b35db129c16cf9c9b2d377074.jpg",
     description: "Handcrafted wear for Men & Women",
     isClothing: true,
   },

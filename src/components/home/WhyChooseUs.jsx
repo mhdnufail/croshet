@@ -29,7 +29,7 @@ const features = [
 
 function WhyChooseUs() {
   return (
-    <section className="bg-secondary py-20 md:py-28">
+    <section id="why-us" className="bg-secondary py-20 md:py-28">
       <Container>
 
         {/* Header */}

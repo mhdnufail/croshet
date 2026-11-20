@@ -19,7 +19,7 @@ const cartSlice = createSlice({
   initialState,
 
   reducers: {
-    // Add product to cart (respects quantity passed in payload)
+    // Add product to cart (only allowed once per product)
     addToCart: (state, action) => {
       const product = action.payload;
       const quantityToAdd =
@@ -28,12 +28,10 @@ const cartSlice = createSlice({
           : 1;
 
       const existingProduct = state.items.find(
-        (item) => item.id === product.id
+        (item) => String(item.id) === String(product.id)
       );
 
-      if (existingProduct) {
-        existingProduct.quantity += quantityToAdd;
-      } else {
+      if (!existingProduct) {
         state.items.push({
           ...product,
           quantity: quantityToAdd,
@@ -44,14 +42,14 @@ const cartSlice = createSlice({
     // Remove product completely
     removeFromCart: (state, action) => {
       state.items = state.items.filter(
-        (item) => item.id !== action.payload
+        (item) => String(item.id) !== String(action.payload)
       );
     },
 
     // Increase quantity
     increaseQuantity: (state, action) => {
       const product = state.items.find(
-        (item) => item.id === action.payload
+        (item) => String(item.id) === String(action.payload)
       );
 
       if (product) {
@@ -62,7 +60,7 @@ const cartSlice = createSlice({
     // Decrease quantity
     decreaseQuantity: (state, action) => {
       const product = state.items.find(
-        (item) => item.id === action.payload
+        (item) => String(item.id) === String(action.payload)
       );
 
       if (product && product.quantity > 1) {

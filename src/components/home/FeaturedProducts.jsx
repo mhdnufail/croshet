@@ -8,7 +8,7 @@ const otherProducts = [
     name: "Crochet Handbag",
     category: "Bags",
     price: 899,
-    image: "/images/crochet-bag.jpg",
+    image: "https://i.pinimg.com/736x/75/49/6f/75496f9217714d1399f70abd6cb91a67.jpg",
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ const clothingOptions = {
     category: "Clothings",
     gender: "Men",
     price: 1499,
-    image: "/images/crochet-men-sweater.jpg",
+    image: "https://i.pinimg.com/1200x/5a/1a/3c/5a1a3cf1ebee553fe7173b6ecb3e84c9.jpg",
   },
   women: {
     id: 9,
@@ -34,7 +34,7 @@ const clothingOptions = {
     category: "Clothings",
     gender: "Women",
     price: 1399,
-    image: "/images/crochet-women-cardigan.jpg",
+    image: "https://i.pinimg.com/736x/a9/31/09/a931093515733a135c35488b8bbe68f0.jpg",
   },
 };
 

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Heart, ShoppingBag, Star } from "lucide-react";
+import { Heart, ShoppingBag, Star, Zap } from "lucide-react";
 import { addToCart } from "../store/cartSlice";
 import { toggleWishlist } from "../store/wishlistSlice";
 import { useAuth } from "../context/AuthContext";
@@ -12,13 +12,31 @@ function ProductCard({ product }) {
   const { user } = useAuth();
   const { showToast } = useToast();
 
+  const cartItems = useSelector((state) => state.cart.items);
   const wishlistItems = useSelector((state) => state.wishlist.items);
-  const isWishlisted = wishlistItems.some((item) => item.id === product.id);
 
-  const handleAddToCart = (e) => {
+  const isInCart = cartItems.some(
+    (item) => String(item.id) === String(product.id)
+  );
+  const isWishlisted = wishlistItems.some(
+    (item) => String(item.id) === String(product.id)
+  );
+
+  const handleAction = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
+    // If already in cart, "Buy Now" proceeds to checkout
+    if (isInCart) {
+      if (!user) {
+        navigate("/login?redirect=/checkout");
+        return;
+      }
+      navigate("/checkout");
+      return;
+    }
+
+    // If not in cart, add once
     if (!user) {
       navigate(`/login?redirect=/products/${product.id}`);
       return;
@@ -109,32 +127,45 @@ function ProductCard({ product }) {
           </div>
         </div>
 
-        {/* Action Button */}
+        {/* Action Button: Add to Cart (when not in cart) or Buy Now (when in cart) */}
         <button
           type="button"
-          onClick={handleAddToCart}
-          className="
+          onClick={handleAction}
+          className={`
             w-full
             mt-5
             py-2.5
             px-4
             rounded-lg
             text-xs
-            font-semibold
+            font-bold
             tracking-[0.15em]
             uppercase
-            bg-primary
-            text-white
-            hover:bg-primary-dark
-            transition
+            transition-all
+            duration-200
             flex
             items-center
             justify-center
             gap-2
-          "
+            shadow-sm
+            ${
+              isInCart
+                ? "bg-text text-white hover:bg-primary"
+                : "bg-primary text-white hover:bg-primary-dark"
+            }
+          `}
         >
-          <ShoppingBag size={14} />
-          <span>Add to Cart</span>
+          {isInCart ? (
+            <>
+              <Zap size={14} className="fill-current" />
+              <span>Buy Now</span>
+            </>
+          ) : (
+            <>
+              <ShoppingBag size={14} />
+              <span>Add to Cart</span>
+            </>
+          )}
         </button>
       </div>
     </div>
