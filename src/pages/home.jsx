@@ -13,54 +13,14 @@ function Home() {
   return (
     <div className="bg-[#f5f1e8] text-[#29271f]">
       <section className="relative h-screen min-h-[650px] overflow-hidden">
-        {/* Navigation */}
-        {/* <nav className="absolute top-0 left-0 z-30 w-full px-6 md:px-10 py-6">
-          <div className="flex items-center justify-between">
-            <Link
-              to="/"
-              className="
-              font-['Playfair_Display']
-              text-[1.45rem]
-              font-semibold
-              tracking-[0.15em]
-              uppercase
-              text-[#F8F3EA]
-              transition-opacity
-              duration-200
-              hover:opacity-75
-            "
-            >
-              CROCHET
-            </Link>
-
-            <div className="hidden md:flex items-center gap-8 text-xs tracking-[0.2em] text-white uppercase">
-              <Link to="/" className="hover:opacity-60 transition">
-                Home
-              </Link>
-
-              <Link to="/products" className="hover:opacity-60 transition">
-                Shop
-              </Link>
-
-              <a href="#about" className="hover:opacity-60 transition">
-                About
-              </a>
-
-              <a href="#contact" className="hover:opacity-60 transition">
-                Contact
-              </a>
-            </div>
-
-            <button className="md:hidden text-white text-2xl">☰</button>
-          </div>
-        </nav> */}
+       
 
         {/* ================= SPLIT IMAGE ================= */}
         <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2">
           {/* Left Image */}
           <div className="relative overflow-hidden">
             <img
-              src={crochetLeft}
+              src="https://i.pinimg.com/736x/d4/06/fe/d406fe14cd52bc3ddf064cc89ab4708e.jpg"
               alt="Handmade crochet chair"
               className="w-full h-full object-cover"
             />
@@ -72,10 +32,10 @@ function Home() {
           {/* Right Image */}
           <div className="relative hidden md:block overflow-hidden">
             <img
-              src={crochetRight}
+              src="https://i.pinimg.com/736x/ae/d2/07/aed207c80b05a6d5363bf74bde02392c.jpg"
               alt="Crochet yarn and handmade craft"
               className="w-full h-full object-cover"
-            />
+            /> 
 
             <div className="absolute inset-0 bg-black/15" />
           </div>
@@ -121,13 +81,6 @@ function Home() {
                 Shop the collection
               </Link>
 
-              {/* <a
-                href="#story"
-                className="px-8 py-3 border border-white text-white text-xs tracking-[0.2em] uppercase
-                hover:bg-white hover:text-[#29271f] transition duration-300"
-              >
-                Our Story
-              </a> */}
             </div>
           </div>
         </div>
@@ -170,5 +123,6 @@ function Home() {
     </div>
   );
 }
+import ScrollAnimation from "../components/scrollIntro";
 
 export default Home;
