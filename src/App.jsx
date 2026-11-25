@@ -14,6 +14,10 @@ import OrderDetails from "./pages/orderDetails";
 import Profile from "./pages/profile";
 import NotFound from "./pages/notFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminLogin from "./pages/admin/AdminLogin"
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import AdminLayout from "./layouts/adminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function App() {
   return (
@@ -88,6 +92,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route element={<AdminProtectedRoute />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/products" element={<div>Products</div>} />
+          <Route path="/admin/users" element={<div>Users</div>} />
+          <Route path="/admin/orders" element={<div>Orders</div>} />
+        </Route>
+      </Route>
 
         {/* 404 Route */}
         <Route path="*" element={<NotFound />} />

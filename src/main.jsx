@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import { Provider } from "react-redux";
 import { store } from "./store/store.js";
+import { AdminAuthProvider } from "./context/AdminAuthContext.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -15,7 +16,9 @@ createRoot(document.getElementById("root")).render(
       <BrowserRouter>
         <AuthProvider>
           <ToastProvider>
-            <App/>
+            <AdminAuthProvider>
+              <App/>
+            </AdminAuthProvider>
           </ToastProvider>
         </AuthProvider>
       </BrowserRouter>
