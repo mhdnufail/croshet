@@ -18,6 +18,7 @@ import AdminLogin from "./pages/admin/AdminLogin"
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import AdminLayout from "./layouts/adminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProducts from "./pages/admin/AdminProducts";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin/products" element={<AdminProducts/>} />
 
         {/* Protected Routes */}
         <Route

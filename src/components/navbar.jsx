@@ -774,7 +774,7 @@ function Navbar() {
             {/* ================= RIGHT ACTIONS ================= */}
             <div className="flex items-center gap-5 sm:gap-6">
 
-              {/* AUTHENTICATED USER */}
+              {/* AUTHENTICATED USER */}     
               {user ? (
                 <>
                   {/* Wishlist */}
