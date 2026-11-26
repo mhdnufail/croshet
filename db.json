@@ -1,13 +1,11 @@
 {
   "products": [
     {
-      "id": "1",
       "name": "Crochet Handbag",
       "category": "Bags",
-      "price": 899,
-      "rating": 4.8,
+      "price": 1000,
       "image": "https://i.pinimg.com/736x/ac/e6/1f/ace61f923b1f5d99cff69daea14415fc.jpg",
-      "description": "A beautifully handcrafted crochet handbag designed for everyday use. Made with care, creativity, and attention to detail."
+      "id": "1"
     },
     {
       "id": "2",
@@ -184,6 +182,13 @@
       "rating": 4.9,
       "image": "https://i.pinimg.com/736x/ab/d1/aa/abd1aafb67c45b2388d4ce3ee130cf0f.jpg",
       "description": "Heavyweight artisan crochet zip cardigan jacket for men, crafted with a rich textured wool-cotton blend."
+    },
+    {
+      "name": "men shirt",
+      "category": "clothing",
+      "price": 999,
+      "image": "https://i.pinimg.com/1200x/5c/bb/ca/5cbbcaa7302bf59e92b0a6102c7bede1.jpg",
+      "id": "BK0lL5VfQRQ"
     }
   ],
   "users": [
@@ -364,16 +369,13 @@
       "id": "SEQeXOyYLvA"
     }
   ],
-  "$schema": "./node_modules/json-server/schema.json",
-
   "admins": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Nufail",
       "email": "nufail@croshet.com",
       "password": "nufail123"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
-
-
