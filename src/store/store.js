@@ -7,9 +7,8 @@ export const store = configureStore({
   reducer: {
     cart: cartReducer,
     wishlist: wishlistReducer,
-
-    adminProducts: adminProductReducer
-  },
+    adminProducts: adminProductReducer,
+    adminUsers: adminUserReducer,  },
 });
 
 // Automatically persist cart and wishlist to localStorage on every state change
