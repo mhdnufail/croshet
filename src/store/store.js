@@ -1,14 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./cartSlice";
 import wishlistReducer from "./wishlistSlice";
-import adminProductReducer from "./AdminProductSlice"
+import adminProductReducer from "./adminProductSlice";
+import adminUserReducer from "./adminUserSlice";
 
 export const store = configureStore({
   reducer: {
     cart: cartReducer,
     wishlist: wishlistReducer,
     adminProducts: adminProductReducer,
-    adminUsers: adminUserReducer,  },
+    adminUsers: adminUserReducer,
+  },
 });
 
 // Automatically persist cart and wishlist to localStorage on every state change

@@ -1,9 +1,5 @@
 import { Link } from "react-router-dom";
 
-// import crochetLeft from "../src/assets/croshet-left.jpg";
-import crochetLeft from '../assets/croshet-left.jpg';
-import crochetRight from '../assets/croshet-right.jpg';
-
 import FeaturedCategories from "../components/home/FeaturedCategories";
 import FeaturedProducts from "../components/home/FeaturedProducts";
 import WhyChooseUs from "../components/home/WhyChooseUs";
@@ -123,6 +119,5 @@ function Home() {
     </div>
   );
 }
-import ScrollAnimation from "../components/scrollIntro";
 
 export default Home;
