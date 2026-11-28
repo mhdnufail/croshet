@@ -12,45 +12,48 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        setLoading(true);
+    let isMounted = true;
 
-        const [productsRes, usersRes, ordersRes] = await Promise.all([
-          fetch("http://localhost:3000/products"),
-          fetch("http://localhost:3000/users"),
-          fetch("http://localhost:3000/orders"),
-        ]);
-
+    Promise.all([
+      fetch("http://localhost:3000/products"),
+      fetch("http://localhost:3000/users"),
+      fetch("http://localhost:3000/orders"),
+    ])
+      .then(async ([productsRes, usersRes, ordersRes]) => {
         const products = productsRes.ok ? await productsRes.json() : [];
         const users = usersRes.ok ? await usersRes.json() : [];
         const orders = ordersRes.ok ? await ordersRes.json() : [];
 
-        const revenue = (orders || []).reduce(
-          (sum, order) => sum + (Number(order.total) || 0),
-          0
-        );
+        if (isMounted) {
+          const revenue = (orders || []).reduce(
+            (sum, order) => sum + (Number(order.total) || 0),
+            0
+          );
 
-        setStats({
-          productsCount: (products || []).length,
-          usersCount: (users || []).length,
-          ordersCount: (orders || []).length,
-          totalRevenue: revenue,
-        });
+          setStats({
+            productsCount: (products || []).length,
+            usersCount: (users || []).length,
+            ordersCount: (orders || []).length,
+            totalRevenue: revenue,
+          });
 
-        // Sort orders newest first and take top 5
-        const sorted = (orders || []).sort(
-          (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
-        );
-        setRecentOrders(sorted.slice(0, 5));
-      } catch (err) {
-        console.error("Dashboard data fetch error:", err);
-      } finally {
-        setLoading(false);
-      }
+          const sorted = (orders || []).sort(
+            (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+          );
+          setRecentOrders(sorted.slice(0, 5));
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          console.error("Dashboard data fetch error:", err);
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
     };
-
-    fetchDashboardData();
   }, []);
 
   return (

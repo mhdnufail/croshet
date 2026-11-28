@@ -31,28 +31,34 @@ function AdminOrders() {
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 10;
 
-  const fetchOrders = async () => {
-    try {
-      setLoading(true);
-      setError("");
-      const res = await fetch("http://localhost:3000/orders");
-      if (!res.ok) throw new Error("Failed to fetch orders");
-      const data = await res.json();
-      // Sort newest first
-      const sorted = (data || []).sort(
-        (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
-      );
-      setOrders(sorted);
-    } catch (err) {
-      console.error("Fetch orders error:", err);
-      setError(err.message || "Failed to load orders");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchOrders();
+    let isMounted = true;
+
+    fetch("http://localhost:3000/orders")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch orders");
+        return res.json();
+      })
+      .then((data) => {
+        if (isMounted) {
+          const sorted = (data || []).sort(
+            (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+          );
+          setOrders(sorted);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          console.error("Fetch orders error:", err);
+          setError(err.message || "Failed to load orders");
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleStatusChange = async (orderId, newStatus) => {

@@ -5,7 +5,7 @@ import {
   addAdminProduct,
   updateAdminProduct,
   deleteAdminProduct,
-} from "../../store/AdminProductSlice";
+} from "../../store/adminProductSlice";
 
 function AdminProducts() {
   const dispatch = useDispatch();
